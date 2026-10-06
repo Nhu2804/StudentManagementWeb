@@ -11,7 +11,7 @@ public class DeleteScoreEndpoint(AppDbContext db) : Endpoint<IdRequest>
     {
         Delete("/scores/{id}");
         
-        Summary(s => s.Summary = "Xoá (mềm) điểm");
+        Summary(s => s.Summary = "Xoá điểm");
     }
 
     public override async Task HandleAsync(IdRequest req, CancellationToken ct)

@@ -11,7 +11,7 @@ public class DeleteStudentEndpoint(AppDbContext db) : Endpoint<IdRequest>
     {
         Delete("/students/{id}");
         
-        Summary(s => s.Summary = "Xoá (mềm) học sinh");
+        Summary(s => s.Summary = "Xoá học sinh");
     }
 
     public override async Task HandleAsync(IdRequest req, CancellationToken ct)

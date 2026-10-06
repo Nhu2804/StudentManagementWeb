@@ -12,7 +12,7 @@ public class DeleteSubjectEndpoint(AppDbContext db) : Endpoint<IdRequest>
     {
         Delete("/subjects/{id}");
         
-        Summary(s => s.Summary = "Xoá (mềm) môn học – chỉ khi chưa có điểm");
+        Summary(s => s.Summary = "Xoá môn học – chỉ khi chưa có điểm");
     }
 
     public override async Task HandleAsync(IdRequest req, CancellationToken ct)

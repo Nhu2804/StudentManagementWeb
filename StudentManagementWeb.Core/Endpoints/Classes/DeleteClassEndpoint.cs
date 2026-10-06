@@ -12,7 +12,7 @@ public class DeleteClassEndpoint(AppDbContext db) : Endpoint<IdRequest>
     {
         Delete("/classes/{id}");
         
-        Summary(s => s.Summary = "Xoá (mềm) lớp học – chỉ khi lớp không còn học sinh");
+        Summary(s => s.Summary = "Xoá lớp học – chỉ khi lớp không còn học sinh");
     }
 
     public override async Task HandleAsync(IdRequest req, CancellationToken ct)
