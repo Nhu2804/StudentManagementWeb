@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Sources/">
+    <Project Path="StudentManagementWeb.Core/StudentManagementWeb.Core.csproj" />
+    <Project Path="StudentManagementWeb.Infrastructure/StudentManagementWeb.Infrastructure.csproj">
+      <BuildDependency Project="StudentManagementWeb.Core/StudentManagementWeb.Core.csproj" />
+    </Project>
+    <Project Path="StudentManagementWeb/StudentManagementWeb.csproj">
+      <BuildDependency Project="StudentManagementWeb.Infrastructure/StudentManagementWeb.Infrastructure.csproj" />
+    </Project>
+  </Folder>
+</Solution>
