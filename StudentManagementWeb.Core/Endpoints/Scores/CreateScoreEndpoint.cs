@@ -29,7 +29,8 @@ public class CreateScoreEndpoint(AppDbContext db) : Endpoint<CreateScoreRequest,
     public override void Configure()
     {
         Post("/scores");
-        
+        Roles(AppRoles.Admin, AppRoles.Teacher);
+
         Summary(s => s.Summary = "Nhập điểm cho học sinh (mỗi môn/học kỳ/năm học một điểm)");
     }
 

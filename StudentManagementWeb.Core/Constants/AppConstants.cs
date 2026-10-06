@@ -26,6 +26,8 @@ public static class ErrorMessages
     public const string ScoreExists = "Học sinh đã có điểm môn này trong học kỳ/năm học này.";
     public const string InvalidCredentials = "Tên đăng nhập hoặc mật khẩu không đúng.";
     public const string AccountDisabled = "Tài khoản đã bị khoá.";
+    public const string UsernameExists = "Tên đăng nhập đã tồn tại.";
+    public const string StudentAlreadyLinked = "Học sinh này đã có tài khoản.";
 }
 
 public static class AppRoles
@@ -33,4 +35,6 @@ public static class AppRoles
     public const string Admin = "Admin";
     public const string Teacher = "Teacher";
     public const string Student = "Student";
+
+    public static readonly string[] All = [Admin, Teacher, Student];
 }

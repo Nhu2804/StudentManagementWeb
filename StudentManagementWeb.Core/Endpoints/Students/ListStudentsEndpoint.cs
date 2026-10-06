@@ -1,6 +1,7 @@
 ﻿using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 using Sieve.Services;
+using StudentManagementWeb.Core.Constants;
 using StudentManagementWeb.Core.DbContexts;
 using StudentManagementWeb.Core.MapperProfiles;
 using StudentManagementWeb.Core.Models.Common;
@@ -14,7 +15,8 @@ public class ListStudentsEndpoint(AppDbContext db, ISieveProcessor sieve)
     public override void Configure()
     {
         Get("/students");
-        
+        Roles(AppRoles.Admin, AppRoles.Teacher);
+
         Summary(s => s.Summary = "Danh sách học sinh (lọc/sắp xếp bằng Sieve)");
     }
 

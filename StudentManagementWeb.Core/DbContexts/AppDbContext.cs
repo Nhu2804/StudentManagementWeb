@@ -84,6 +84,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             e.HasIndex(x => x.Username).IsUnique();
             e.Property(x => x.PasswordHash).HasMaxLength(200).IsRequired();
             e.Property(x => x.FullName).HasMaxLength(150).IsRequired();
+            e.Property(x => x.Role).HasMaxLength(20).IsRequired();
+
+            e.HasOne(x => x.Student)
+                .WithMany()
+                .HasForeignKey(x => x.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             e.HasQueryFilter(x => !x.IsDeleted);
         });
     }

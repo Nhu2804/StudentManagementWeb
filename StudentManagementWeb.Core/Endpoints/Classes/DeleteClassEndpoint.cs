@@ -11,7 +11,8 @@ public class DeleteClassEndpoint(AppDbContext db) : Endpoint<IdRequest>
     public override void Configure()
     {
         Delete("/classes/{id}");
-        
+        Roles(AppRoles.Admin);
+
         Summary(s => s.Summary = "Xoá lớp học – chỉ khi lớp không còn học sinh");
     }
 

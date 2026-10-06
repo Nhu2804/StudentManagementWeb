@@ -23,7 +23,8 @@ public class UpdateScoreEndpoint(AppDbContext db) : Endpoint<UpdateScoreRequest,
     public override void Configure()
     {
         Put("/scores/{id}");
-        
+        Roles(AppRoles.Admin, AppRoles.Teacher);
+
         Summary(s => s.Summary = "Sửa giá trị điểm");
     }
 

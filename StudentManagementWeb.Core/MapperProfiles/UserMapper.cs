@@ -9,6 +9,8 @@ public static class UserMapper
     {
         Id = u.Id,
         Username = u.Username,
-        FullName = u.FullName
+        FullName = u.FullName,
+        Role = u.Role,
+        StudentId = u.StudentId
     };
 }

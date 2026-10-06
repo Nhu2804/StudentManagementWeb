@@ -24,7 +24,8 @@ public class CreateClassEndpoint(AppDbContext db) : Endpoint<CreateClassRequest,
     public override void Configure()
     {
         Post("/classes");
-        
+        Roles(AppRoles.Admin);
+
         Summary(s => s.Summary = "Tạo lớp học mới");
     }
 

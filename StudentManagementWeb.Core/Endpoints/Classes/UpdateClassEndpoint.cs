@@ -25,7 +25,8 @@ public class UpdateClassEndpoint(AppDbContext db) : Endpoint<UpdateClassRequest,
     public override void Configure()
     {
         Put("/classes/{id}");
-        
+        Roles(AppRoles.Admin);
+
         Summary(s => s.Summary = "Cập nhật lớp học");
     }
 

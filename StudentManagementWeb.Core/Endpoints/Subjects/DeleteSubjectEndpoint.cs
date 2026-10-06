@@ -11,7 +11,8 @@ public class DeleteSubjectEndpoint(AppDbContext db) : Endpoint<IdRequest>
     public override void Configure()
     {
         Delete("/subjects/{id}");
-        
+        Roles(AppRoles.Admin);
+
         Summary(s => s.Summary = "Xoá môn học – chỉ khi chưa có điểm");
     }
 

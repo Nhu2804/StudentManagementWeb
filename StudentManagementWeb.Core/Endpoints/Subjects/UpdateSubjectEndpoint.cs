@@ -23,7 +23,8 @@ public class UpdateSubjectEndpoint(AppDbContext db) : Endpoint<UpdateSubjectRequ
     public override void Configure()
     {
         Put("/subjects/{id}");
-        
+        Roles(AppRoles.Admin);
+
         Summary(s => s.Summary = "Cập nhật môn học");
     }
 

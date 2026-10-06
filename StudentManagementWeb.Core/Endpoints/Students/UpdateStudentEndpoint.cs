@@ -27,7 +27,8 @@ public class UpdateStudentEndpoint(AppDbContext db) : Endpoint<UpdateStudentRequ
     public override void Configure()
     {
         Put("/students/{id}");
-        
+        Roles(AppRoles.Admin);
+
         Summary(s => s.Summary = "Cập nhật thông tin học sinh");
     }
 

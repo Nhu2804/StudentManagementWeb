@@ -1,5 +1,6 @@
 ﻿using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
+using StudentManagementWeb.Core.Constants;
 using StudentManagementWeb.Core.DbContexts;
 using StudentManagementWeb.Core.Models.Classes;
 using StudentManagementWeb.Core.SharedServices;
@@ -12,7 +13,8 @@ public class GetClassRankingEndpoint(AppDbContext db)
     public override void Configure()
     {
         Get("/classes/{classId}/ranking");
-        
+        Roles(AppRoles.Admin, AppRoles.Teacher);
+
         Summary(s => s.Summary =
             "Xếp hạng học sinh trong lớp theo điểm trung bình (lọc theo học kỳ/năm học)");
     }

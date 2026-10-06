@@ -28,7 +28,8 @@ public class CreateStudentEndpoint(AppDbContext db, IStudentCodeGenerator codeGe
     public override void Configure()
     {
         Post("/students");
-        
+        Roles(AppRoles.Admin);
+
         Summary(s => s.Summary = "Thêm học sinh mới");
     }
 

@@ -40,7 +40,7 @@ public class ListScoresRequest : SieveRequest
 
 public class StudentTranscriptRequest
 {
-    public Guid StudentId { get; set; }   // lấy từ route /students/{studentId}/scores
+    public Guid? StudentId { get; set; }  // lấy từ route /students/{studentId}/scores
     public int? Semester { get; set; }
     public string? SchoolYear { get; set; }
 }

@@ -1,5 +1,6 @@
 ﻿using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
+using StudentManagementWeb.Core.Constants;
 using StudentManagementWeb.Core.DbContexts;
 using StudentManagementWeb.Core.MapperProfiles;
 using StudentManagementWeb.Core.Models.Classes;
@@ -12,7 +13,8 @@ public class GetClassByIdEndpoint(AppDbContext db) : Endpoint<IdRequest, ClassDt
     public override void Configure()
     {
         Get("/classes/{id}");
-        
+        Roles(AppRoles.Admin, AppRoles.Teacher);
+
         Summary(s => s.Summary = "Lấy thông tin một lớp học (kèm sĩ số)");
     }
 

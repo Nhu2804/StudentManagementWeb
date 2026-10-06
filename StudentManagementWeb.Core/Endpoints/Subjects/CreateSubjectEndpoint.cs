@@ -22,7 +22,8 @@ public class CreateSubjectEndpoint(AppDbContext db) : Endpoint<CreateSubjectRequ
     public override void Configure()
     {
         Post("/subjects");
-        
+        Roles(AppRoles.Admin);
+
         Summary(s => s.Summary = "Thêm môn học mới");
     }
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using StudentManagementWeb.Core.Constants;
 using StudentManagementWeb.Core.DbContexts;
 using StudentManagementWeb.Core.Entities;
 
@@ -44,13 +45,30 @@ public static class DatabaseInitializer
                 new Class { Name = "11A1", Grade = 11, SchoolYear = "2026-2027" });
         }
 
-        if (!await db.Users.IgnoreQueryFilters().AnyAsync())
+        var admin = await db.Users.IgnoreQueryFilters().FirstOrDefaultAsync(u => u.Username == "admin");
+        if (admin is null)
         {
             db.Users.Add(new AppUser
             {
                 Username = "admin",
                 FullName = "Quản trị viên",
+                Role = AppRoles.Admin,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123")
+            });
+        }
+        else if (string.IsNullOrEmpty(admin.Role))
+        {
+            admin.Role = AppRoles.Admin;
+        }
+
+        if (!await db.Users.IgnoreQueryFilters().AnyAsync(u => u.Username == "teacher"))
+        {
+            db.Users.Add(new AppUser
+            {
+                Username = "teacher",
+                FullName = "Giáo viên mẫu",
+                Role = AppRoles.Teacher,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Teacher@123")
             });
         }
 

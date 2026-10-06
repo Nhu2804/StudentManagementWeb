@@ -1,6 +1,7 @@
 ﻿using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 using Sieve.Services;
+using StudentManagementWeb.Core.Constants;
 using StudentManagementWeb.Core.DbContexts;
 using StudentManagementWeb.Core.MapperProfiles;
 using StudentManagementWeb.Core.Models.Common;
@@ -14,7 +15,8 @@ public class ListScoresEndpoint(AppDbContext db, ISieveProcessor sieve)
     public override void Configure()
     {
         Get("/scores");
-        
+        Roles(AppRoles.Admin, AppRoles.Teacher);
+
         Summary(s => s.Summary = "Danh sách điểm (lọc theo HS/môn/lớp + lọc/sắp xếp bằng Sieve)");
     }
 

@@ -57,8 +57,11 @@ public class LoginEndpoint(AppDbContext db, IConfiguration config)
         {
             o.SigningKey = signingKey;
             o.ExpireAt = expiresAt;
+            o.User.Roles.Add(user.Role);
             o.User.Claims.Add(("UserId", user.Id.ToString()));
             o.User.Claims.Add(("Username", user.Username));
+            if (user.StudentId is not null)
+                o.User.Claims.Add(("StudentId", user.StudentId.Value.ToString()));
         });
 
         await Send.OkAsync(new LoginResponse

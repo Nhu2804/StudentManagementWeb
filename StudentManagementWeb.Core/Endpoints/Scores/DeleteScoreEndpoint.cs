@@ -1,5 +1,6 @@
 ﻿using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
+using StudentManagementWeb.Core.Constants;
 using StudentManagementWeb.Core.DbContexts;
 using StudentManagementWeb.Core.Models.Common;
 
@@ -10,7 +11,8 @@ public class DeleteScoreEndpoint(AppDbContext db) : Endpoint<IdRequest>
     public override void Configure()
     {
         Delete("/scores/{id}");
-        
+        Roles(AppRoles.Admin, AppRoles.Teacher);
+
         Summary(s => s.Summary = "Xoá điểm");
     }
 
