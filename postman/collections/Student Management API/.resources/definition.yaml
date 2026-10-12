@@ -1,6 +1,0 @@
-$kind: collection
-description: ""
-variables:
-  baseUrl: https://localhost:7001
-  token: ""
-  bearerToken: ""
