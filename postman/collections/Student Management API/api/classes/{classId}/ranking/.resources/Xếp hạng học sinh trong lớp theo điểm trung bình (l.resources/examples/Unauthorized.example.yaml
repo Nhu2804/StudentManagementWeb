@@ -1,0 +1,23 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/classes/:classId/ranking?semester=780&schoolYear=string"
+  method: GET
+  headers:
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  queryParams:
+    semester: "780"
+    schoolYear: string
+  pathVariables:
+    classId: string
+  body:
+    type: text
+    content: ""
+response:
+  statusCode: 401
+  statusText: Unauthorized
+  body:
+    type: text
+    content: ""
+order: 2000

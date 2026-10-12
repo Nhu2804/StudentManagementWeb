@@ -1,0 +1,48 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/scores/:id"
+method: PUT
+headers:
+  Content-Type: application/json
+  Accept: application/json
+pathVariables:
+  - key: id
+    value: string
+    disabled: false
+    description: ""
+    $type: |-
+      {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value"
+        ]
+      }
+body:
+  type: json
+  content: |-
+    {
+      "value": 7.150284487852049
+    }
+  $type: |-
+    {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        }
+      }
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings: {}
+examples: ./.resources/Sửa giá trị điểm.resources/examples
+order: 2000

@@ -1,0 +1,31 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/subjects/:id"
+method: DELETE
+pathVariables:
+  - key: id
+    value: string
+    disabled: false
+    description: ""
+    $type: |-
+      {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value"
+        ]
+      }
+body:
+  type: text
+  content: ""
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings: {}
+examples: ./.resources/Xoá môn học – chỉ khi chưa có điểm.resources/examples
+order: 1000

@@ -29,6 +29,16 @@ public static class ScoreMapper
         Value = r.Value
     };
 
+    // Import từ Excel: studentId và subjectId đã tra được từ mã học sinh, mã môn
+    public static Score ToEntity(this ImportScoreRow r, Guid studentId, Guid subjectId) => new()
+    {
+        StudentId = studentId,
+        SubjectId = subjectId,
+        Semester = r.Semester,
+        SchoolYear = r.SchoolYear,
+        Value = r.Value
+    };
+
     public static TranscriptItemDto ToTranscriptItem(this Score s) => new()
     {
         ScoreId = s.Id,

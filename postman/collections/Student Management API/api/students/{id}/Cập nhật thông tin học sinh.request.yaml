@@ -1,0 +1,93 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/students/:id"
+method: PUT
+headers:
+  Content-Type: application/json
+  Accept: application/json
+pathVariables:
+  - key: id
+    value: string
+    disabled: false
+    description: ""
+    $type: |-
+      {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value"
+        ]
+      }
+body:
+  type: json
+  content: |-
+    {
+      "fullName": "string",
+      "classId": "string",
+      "dateOfBirth": "1970-03-21",
+      "gender": 2,
+      "email": "xZ@.tO(/",
+      "phone": "string",
+      "address": "string"
+    }
+  $type: |-
+    {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "fullName": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 150
+            },
+            "dateOfBirth": {
+              "type": "string",
+              "format": "date"
+            },
+            "gender": {
+              "type": "integer",
+              "enum": [
+                1,
+                2
+              ],
+              "description": ""
+            },
+            "email": {
+              "type": "string",
+              "pattern": "^[^@]+@[^@]+$"
+            },
+            "phone": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 20
+            },
+            "address": {
+              "type": "string"
+            },
+            "classId": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "fullName",
+            "classId"
+          ]
+        },
+        {
+          "type": "object"
+        }
+      ]
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings: {}
+examples: ./.resources/Cập nhật thông tin học sinh.resources/examples
+order: 3000

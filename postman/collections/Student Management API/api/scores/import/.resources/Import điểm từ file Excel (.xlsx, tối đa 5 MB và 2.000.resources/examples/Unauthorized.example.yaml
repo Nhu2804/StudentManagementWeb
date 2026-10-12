@@ -1,0 +1,24 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/scores/import"
+  method: POST
+  headers:
+    - key: Content-Type
+      value: multipart/form-data
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  body:
+    type: formdata
+    content:
+      - type: file
+        key: file
+        src: ""
+        description: ""
+response:
+  statusCode: 401
+  statusText: Unauthorized
+  body:
+    type: text
+    content: ""
+order: 2000

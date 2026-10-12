@@ -1,0 +1,66 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/subjects"
+  method: POST
+  headers:
+    - key: Content-Type
+      value: application/json
+    - key: Accept
+      value: application/problem+json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  body:
+    type: json
+    content: |-
+      {
+        "code": "st",
+        "name": "string"
+      }
+response:
+  statusCode: 400
+  statusText: Bad Request
+  headers:
+    Content-Type: application/problem+json
+  body:
+    type: json
+    content: |-
+      {
+        "statusCode": 400,
+        "message": "One or more errors occurred!",
+        "errors": {
+          "key_0": [
+            "string",
+            "string"
+          ],
+          "key_1": [
+            "string",
+            "string"
+          ],
+          "key_2": [
+            "string",
+            "string"
+          ]
+        }
+      }
+    $type: |-
+      {
+        "description": "the dto used to send an error response to the client",
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "description": "the http status code sent to the client. default is 400.",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "the message for the error response"
+          },
+          "errors": {
+            "type": "object",
+            "description": "the collection of errors for the current context"
+          }
+        }
+      }
+order: 2000

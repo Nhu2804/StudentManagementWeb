@@ -1,0 +1,69 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/students"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "fullName": "string",
+      "classId": "string",
+      "dateOfBirth": "1982-09-11",
+      "gender": 2,
+      "email": "JL@Os_)G$3yt",
+      "phone": "string",
+      "address": "string"
+    }
+  $type: |-
+    {
+      "type": "object",
+      "properties": {
+        "fullName": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 150
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "format": "date"
+        },
+        "gender": {
+          "type": "integer",
+          "enum": [
+            1,
+            2
+          ],
+          "description": ""
+        },
+        "email": {
+          "type": "string",
+          "pattern": "^[^@]+@[^@]+$"
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 20
+        },
+        "address": {
+          "type": "string"
+        },
+        "classId": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "fullName",
+        "classId"
+      ]
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings: {}
+examples: ./.resources/Thêm học sinh mới.resources/examples
+order: 1000

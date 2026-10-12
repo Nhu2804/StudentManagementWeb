@@ -1,0 +1,115 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/scores/import"
+  method: POST
+  headers:
+    - key: Content-Type
+      value: multipart/form-data
+    - key: Accept
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  body:
+    type: formdata
+    content:
+      - type: file
+        key: file
+        src: ""
+        description: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "totalRows": 429,
+        "created": 7203,
+        "updated": 6306,
+        "failed": 9714,
+        "errors": [
+          {
+            "row": 4116,
+            "data": {
+              "studentCode": "string",
+              "subjectCode": "string",
+              "semester": "string",
+              "schoolYear": "string",
+              "score": "string"
+            },
+            "message": "string"
+          },
+          {
+            "row": 5938,
+            "data": {
+              "studentCode": "string",
+              "subjectCode": "string",
+              "semester": "string",
+              "schoolYear": "string",
+              "score": "string"
+            },
+            "message": "string"
+          }
+        ]
+      }
+    $type: |-
+      {
+        "type": "object",
+        "properties": {
+          "totalRows": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "created": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "updated": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "failed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "row": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "studentCode": {
+                      "type": "string"
+                    },
+                    "subjectCode": {
+                      "type": "string"
+                    },
+                    "semester": {
+                      "type": "string"
+                    },
+                    "schoolYear": {
+                      "type": "string"
+                    },
+                    "score": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+order: 1000

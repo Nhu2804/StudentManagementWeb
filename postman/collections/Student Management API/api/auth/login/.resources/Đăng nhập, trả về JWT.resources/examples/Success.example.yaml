@@ -1,0 +1,67 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/auth/login"
+  method: POST
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "username": "string",
+        "password": "string"
+      }
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "token": "string",
+        "expiresAt": "2012-07-07T10:05:42.211Z",
+        "user": {
+          "id": "string",
+          "username": "string",
+          "fullName": "string",
+          "role": "string",
+          "studentId": "string"
+        }
+      }
+    $type: |-
+      {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "username": {
+                "type": "string"
+              },
+              "fullName": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              },
+              "studentId": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+order: 1000

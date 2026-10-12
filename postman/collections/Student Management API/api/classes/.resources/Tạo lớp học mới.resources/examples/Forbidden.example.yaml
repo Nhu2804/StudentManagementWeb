@@ -1,0 +1,25 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/classes"
+  method: POST
+  headers:
+    - key: Content-Type
+      value: application/json
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  body:
+    type: json
+    content: |-
+      {
+        "name": "string",
+        "schoolYear": "0353-0630",
+        "grade": 3
+      }
+response:
+  statusCode: 403
+  statusText: Forbidden
+  body:
+    type: text
+    content: ""
+order: 4000

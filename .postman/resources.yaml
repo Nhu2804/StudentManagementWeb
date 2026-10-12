@@ -1,0 +1,11 @@
+workspace:
+  id: a84c046e-8f80-46c8-8567-3f58912f4c4a
+localResources:
+  specs:
+    - ../StudentManagementWeb/obj/Debug/net10.0/EndpointInfo/StudentManagementWeb.json
+    - ../postman/specs/Student Management API/index.json
+    - ../postman/specs/Student Management API-1/index.json
+resourceNameMappings:
+  specs:
+    - ../postman/specs/Student Management API/index.json: Student Management API
+    - ../postman/specs/Student Management API-1/index.json: Student Management API

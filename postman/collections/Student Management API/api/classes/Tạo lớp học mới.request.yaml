@@ -1,0 +1,48 @@
+$kind: http-request
+description: ""
+url: "{{baseUrl}}/api/classes"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "string",
+      "schoolYear": "0353-0630",
+      "grade": 3
+    }
+  $type: |-
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 50
+        },
+        "grade": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12,
+          "format": "int32"
+        },
+        "schoolYear": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\d{4}-\\d{4}$"
+        }
+      },
+      "required": [
+        "name",
+        "schoolYear"
+      ]
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{bearerToken}}"
+settings: {}
+examples: ./.resources/Tạo lớp học mới.resources/examples
+order: 1000

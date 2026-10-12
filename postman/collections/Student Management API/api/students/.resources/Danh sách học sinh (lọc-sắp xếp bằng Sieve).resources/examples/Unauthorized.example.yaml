@@ -1,0 +1,23 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/students?filters=string&sorts=string&page=780&pageSize=780"
+  method: GET
+  headers:
+    - key: Authorization
+      value: Bearer <token>
+      description: "Added as a part of security scheme: bearer"
+  queryParams:
+    filters: string
+    sorts: string
+    page: "780"
+    pageSize: "780"
+  body:
+    type: text
+    content: ""
+response:
+  statusCode: 401
+  statusText: Unauthorized
+  body:
+    type: text
+    content: ""
+order: 2000
