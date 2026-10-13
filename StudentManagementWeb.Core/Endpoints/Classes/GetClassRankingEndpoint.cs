@@ -7,18 +7,10 @@ using StudentManagementWeb.Core.SharedServices;
 
 namespace StudentManagementWeb.Core.Endpoints.Classes;
 
+[HttpGet(ApiRoutes.Classes.Ranking)]
 public class GetClassRankingEndpoint(AppDbContext db)
     : Endpoint<ClassRankingRequest, ClassRankingDto>
 {
-    public override void Configure()
-    {
-        Get("/classes/{classId}/ranking");
-        Roles(AppRoles.Admin, AppRoles.Teacher);
-
-        Summary(s => s.Summary =
-            "Xếp hạng học sinh trong lớp theo điểm trung bình (lọc theo học kỳ/năm học)");
-    }
-
     public override async Task HandleAsync(ClassRankingRequest req, CancellationToken ct)
     {
         var cls = await db.Classes.AsNoTracking()
@@ -85,5 +77,13 @@ public class GetClassRankingEndpoint(AppDbContext db)
             ClassName = cls.Name,
             Items = ordered
         }, ct);
+    }
+}
+
+public class GetClassRankingSummary : Summary<GetClassRankingEndpoint>
+{
+    public GetClassRankingSummary()
+    {
+        Summary = "Xếp hạng học sinh trong lớp theo điểm trung bình (lọc theo học kỳ/năm học)";
     }
 }

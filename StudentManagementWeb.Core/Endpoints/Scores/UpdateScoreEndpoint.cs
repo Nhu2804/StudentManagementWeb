@@ -18,16 +18,9 @@ public class UpdateScoreValidator : Validator<UpdateScoreRequest>
     }
 }
 
+[HttpPut(ApiRoutes.Scores.Update)]
 public class UpdateScoreEndpoint(AppDbContext db) : Endpoint<UpdateScoreRequest, ScoreDto>
 {
-    public override void Configure()
-    {
-        Put("/scores/{id}");
-        Roles(AppRoles.Admin, AppRoles.Teacher);
-
-        Summary(s => s.Summary = "Sửa giá trị điểm");
-    }
-
     public override async Task HandleAsync(UpdateScoreRequest req, CancellationToken ct)
     {
         var score = await db.Scores
@@ -45,5 +38,13 @@ public class UpdateScoreEndpoint(AppDbContext db) : Endpoint<UpdateScoreRequest,
         await db.SaveChangesAsync(ct);
 
         await Send.OkAsync(score.ToDto(), ct);
+    }
+}
+
+public class UpdateScoreSummary : Summary<UpdateScoreEndpoint>
+{
+    public UpdateScoreSummary()
+    {
+        Summary = "Sửa điểm";
     }
 }

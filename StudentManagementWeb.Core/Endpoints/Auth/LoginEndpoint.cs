@@ -1,6 +1,7 @@
 ﻿using FastEndpoints;
 using FastEndpoints.Security;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using StudentManagementWeb.Core.Constants;
@@ -19,16 +20,11 @@ public class LoginValidator : Validator<LoginRequest>
     }
 }
 
+[HttpPost(ApiRoutes.Auth.Login)]
+[AllowAnonymous]
 public class LoginEndpoint(AppDbContext db, IConfiguration config)
     : Endpoint<LoginRequest, LoginResponse>
 {
-    public override void Configure()
-    {
-        Post("/auth/login");
-        AllowAnonymous();
-        Summary(s => s.Summary = "Đăng nhập, trả về JWT");
-    }
-
     public override async Task HandleAsync(LoginRequest req, CancellationToken ct)
     {
         var username = req.Username.Trim().ToLowerInvariant();
@@ -70,5 +66,13 @@ public class LoginEndpoint(AppDbContext db, IConfiguration config)
             ExpiresAt = expiresAt,
             User = user.ToDto()
         }, ct);
+    }
+}
+
+public class LoginSummary : Summary<LoginEndpoint>
+{
+    public LoginSummary()
+    {
+        Summary = "Đăng nhập, trả về JWT";
     }
 }

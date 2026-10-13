@@ -9,17 +9,10 @@ using StudentManagementWeb.Core.Models.Common;
 
 namespace StudentManagementWeb.Core.Endpoints.Classes;
 
+[HttpGet(ApiRoutes.Classes.GetAll)]
 public class ListClassesEndpoint(AppDbContext db, ISieveProcessor sieve)
     : Endpoint<ListClassesRequest, PagedResult<ClassDto>>
 {
-    public override void Configure()
-    {
-        Get("/classes");
-        Roles(AppRoles.Admin, AppRoles.Teacher);
-
-        Summary(s => s.Summary = "Danh sách lớp học (lọc theo khối + lọc/sắp xếp bằng Sieve)");
-    }
-
     public override async Task HandleAsync(ListClassesRequest req, CancellationToken ct)
     {
         var source = db.Classes.AsNoTracking().AsQueryable();
@@ -48,5 +41,13 @@ public class ListClassesEndpoint(AppDbContext db, ISieveProcessor sieve)
             PageSize = req.SafePageSize,
             TotalItems = total
         }, ct);
+    }
+}
+
+public class ListClassesSummary : Summary<ListClassesEndpoint>
+{
+    public ListClassesSummary()
+    {
+        Summary = "Danh sách lớp học (lọc theo khối + lọc/sắp xếp bằng Sieve)";
     }
 }

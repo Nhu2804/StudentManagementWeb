@@ -24,6 +24,8 @@ public static class DependencyInjection
                 npgsql.MigrationsAssembly(typeof(CoreAssemblyMarker).Assembly.FullName)));
 
         services.AddScoped<IStudentCodeGenerator, StudentCodeGenerator>();
+        services.AddScoped<IScoreExcelService, ScoreExcelService>();
+        services.AddScoped<IScoreImportService, ScoreImportService>();
 
         services.Configure<SieveOptions>(options =>
         {

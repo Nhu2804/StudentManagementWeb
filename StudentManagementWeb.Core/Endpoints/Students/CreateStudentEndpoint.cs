@@ -22,17 +22,10 @@ public class CreateStudentValidator : Validator<CreateStudentRequest>
     }
 }
 
+[HttpPost(ApiRoutes.Students.Create)]
 public class CreateStudentEndpoint(AppDbContext db, IStudentCodeGenerator codeGenerator)
     : Endpoint<CreateStudentRequest, StudentDto>
 {
-    public override void Configure()
-    {
-        Post("/students");
-        Roles(AppRoles.Admin);
-
-        Summary(s => s.Summary = "Thêm học sinh mới");
-    }
-
     public override async Task HandleAsync(CreateStudentRequest req, CancellationToken ct)
     {
         var classExists = await db.Classes.AnyAsync(c => c.Id == req.ClassId, ct);
@@ -51,5 +44,13 @@ public class CreateStudentEndpoint(AppDbContext db, IStudentCodeGenerator codeGe
 
         await db.Entry(student).Reference(s => s.Class).LoadAsync(ct);
         await Send.ResponseAsync(student.ToDto(), 201, ct);
+    }
+}
+
+public class CreateStudentSummary : Summary<CreateStudentEndpoint>
+{
+    public CreateStudentSummary()
+    {
+        Summary = "Thêm học sinh mới";
     }
 }

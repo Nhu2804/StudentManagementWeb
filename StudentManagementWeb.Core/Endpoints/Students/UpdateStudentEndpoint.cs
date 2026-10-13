@@ -22,16 +22,9 @@ public class UpdateStudentValidator : Validator<UpdateStudentRequest>
     }
 }
 
+[HttpPut(ApiRoutes.Students.Update)]
 public class UpdateStudentEndpoint(AppDbContext db) : Endpoint<UpdateStudentRequest, StudentDto>
 {
-    public override void Configure()
-    {
-        Put("/students/{id}");
-        Roles(AppRoles.Admin);
-
-        Summary(s => s.Summary = "Cập nhật thông tin học sinh");
-    }
-
     public override async Task HandleAsync(UpdateStudentRequest req, CancellationToken ct)
     {
         var student = await db.Students.FirstOrDefaultAsync(s => s.Id == req.Id, ct);
@@ -54,5 +47,13 @@ public class UpdateStudentEndpoint(AppDbContext db) : Endpoint<UpdateStudentRequ
 
         await db.Entry(student).Reference(s => s.Class).LoadAsync(ct);
         await Send.OkAsync(student.ToDto(), ct);
+    }
+}
+
+public class UpdateStudentSummary : Summary<UpdateStudentEndpoint>
+{
+    public UpdateStudentSummary()
+    {
+        Summary = "Cập nhật thông tin học sinh";
     }
 }

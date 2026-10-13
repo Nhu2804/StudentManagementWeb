@@ -6,16 +6,9 @@ using StudentManagementWeb.Core.Models.Common;
 
 namespace StudentManagementWeb.Core.Endpoints.Classes;
 
+[HttpDelete(ApiRoutes.Classes.Delete)]
 public class DeleteClassEndpoint(AppDbContext db) : Endpoint<IdRequest>
 {
-    public override void Configure()
-    {
-        Delete("/classes/{id}");
-        Roles(AppRoles.Admin);
-
-        Summary(s => s.Summary = "Xoá lớp học – chỉ khi lớp không còn học sinh");
-    }
-
     public override async Task HandleAsync(IdRequest req, CancellationToken ct)
     {
         var entity = await db.Classes.FirstOrDefaultAsync(c => c.Id == req.Id, ct);
@@ -37,5 +30,13 @@ public class DeleteClassEndpoint(AppDbContext db) : Endpoint<IdRequest>
         await db.SaveChangesAsync(ct);
 
         await Send.NoContentAsync(ct);
+    }
+}
+
+public class DeleteClassSummary : Summary<DeleteClassEndpoint>
+{
+    public DeleteClassSummary()
+    {
+        Summary = "Xoá lớp học – chỉ khi lớp không còn học sinh";
     }
 }

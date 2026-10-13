@@ -9,17 +9,10 @@ using StudentManagementWeb.Core.Models.Scores;
 
 namespace StudentManagementWeb.Core.Endpoints.Scores;
 
+[HttpGet(ApiRoutes.Scores.GetAll)]
 public class ListScoresEndpoint(AppDbContext db, ISieveProcessor sieve)
     : Endpoint<ListScoresRequest, PagedResult<ScoreDto>>
 {
-    public override void Configure()
-    {
-        Get("/scores");
-        Roles(AppRoles.Admin, AppRoles.Teacher);
-
-        Summary(s => s.Summary = "Danh sách điểm (lọc theo HS/môn/lớp + lọc/sắp xếp bằng Sieve)");
-    }
-
     public override async Task HandleAsync(ListScoresRequest req, CancellationToken ct)
     {
         var source = db.Scores.AsNoTracking()
@@ -38,7 +31,8 @@ public class ListScoresEndpoint(AppDbContext db, ISieveProcessor sieve)
 
         var query = sieve.Apply(req.ToSieveModel(), source, applyPagination: false);
 
-        if (string.IsNullOrWhiteSpace(req.Sorts))
+        // Chưa có sắp xếp nào (không truyền Sorts, hoặc Sieve bỏ qua trường sai) thì dùng thứ tự mặc định.
+        if (!query.Expression.ToString().Contains("OrderBy"))
         {
             query = query
                 .OrderByDescending(s => s.SchoolYear)
@@ -61,5 +55,13 @@ public class ListScoresEndpoint(AppDbContext db, ISieveProcessor sieve)
             PageSize = req.SafePageSize,
             TotalItems = total
         }, ct);
+    }
+}
+
+public class ListScoresSummary : Summary<ListScoresEndpoint>
+{
+    public ListScoresSummary()
+    {
+        Summary = "Danh sách điểm (lọc theo HS/môn/lớp + lọc/sắp xếp bằng Sieve)";
     }
 }

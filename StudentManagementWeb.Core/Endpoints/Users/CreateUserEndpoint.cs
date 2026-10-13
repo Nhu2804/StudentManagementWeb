@@ -26,15 +26,9 @@ public class CreateUserValidator : Validator<CreateUserRequest>
     }
 }
 
+[HttpPost(ApiRoutes.Users.Create)]
 public class CreateUserEndpoint(AppDbContext db) : Endpoint<CreateUserRequest, UserDto>
 {
-    public override void Configure()
-    {
-        Post("/users");
-        Roles(AppRoles.Admin);
-        Summary(s => s.Summary = "Tạo tài khoản (chỉ Admin)");
-    }
-
     public override async Task HandleAsync(CreateUserRequest req, CancellationToken ct)
     {
         var username = req.Username.Trim().ToLowerInvariant();
@@ -83,5 +77,13 @@ public class CreateUserEndpoint(AppDbContext db) : Endpoint<CreateUserRequest, U
         await db.SaveChangesAsync(ct);
 
         await Send.ResponseAsync(user.ToDto(), 201, ct);
+    }
+}
+
+public class CreateUserSummary : Summary<CreateUserEndpoint>
+{
+    public CreateUserSummary()
+    {
+        Summary = "Tạo tài khoản (chỉ Admin)";
     }
 }

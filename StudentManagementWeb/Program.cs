@@ -3,6 +3,8 @@ using FastEndpoints.Swagger;
 using FastEndpoints.Security;
 using StudentManagementWeb.Core;
 using StudentManagementWeb.Infrastructure;
+using StudentManagementWeb.Core.Constants;
+using StudentManagementWeb.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +41,7 @@ await app.Services.InitializeDatabaseAsync();
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseAuthorizationMiddleware();
 app.UseFastEndpoints(options => options.Endpoints.RoutePrefix = "api");
 
 if (app.Environment.IsDevelopment())

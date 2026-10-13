@@ -19,16 +19,9 @@ public class CreateClassValidator : Validator<CreateClassRequest>
     }
 }
 
+[HttpPost(ApiRoutes.Classes.Create)]
 public class CreateClassEndpoint(AppDbContext db) : Endpoint<CreateClassRequest, ClassDto>
 {
-    public override void Configure()
-    {
-        Post("/classes");
-        Roles(AppRoles.Admin);
-
-        Summary(s => s.Summary = "Tạo lớp học mới");
-    }
-
     public override async Task HandleAsync(CreateClassRequest req, CancellationToken ct)
     {
         var name = req.Name.Trim();
@@ -47,5 +40,13 @@ public class CreateClassEndpoint(AppDbContext db) : Endpoint<CreateClassRequest,
         await db.SaveChangesAsync(ct);
 
         await Send.ResponseAsync(entity.ToDto(), 201, ct);
+    }
+}
+
+public class CreateClassSummary : Summary<CreateClassEndpoint>
+{
+    public CreateClassSummary()
+    {
+        Summary = "Tạo lớp học mới";
     }
 }

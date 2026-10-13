@@ -9,17 +9,10 @@ using StudentManagementWeb.Core.Models.Students;
 
 namespace StudentManagementWeb.Core.Endpoints.Students;
 
+[HttpGet(ApiRoutes.Students.GetAll)]
 public class ListStudentsEndpoint(AppDbContext db, ISieveProcessor sieve)
     : Endpoint<ListStudentsRequest, PagedResult<StudentDto>>
 {
-    public override void Configure()
-    {
-        Get("/students");
-        Roles(AppRoles.Admin, AppRoles.Teacher);
-
-        Summary(s => s.Summary = "Danh sách học sinh (lọc/sắp xếp bằng Sieve)");
-    }
-
     public override async Task HandleAsync(ListStudentsRequest req, CancellationToken ct)
     {
         // Include(Class) để có tên lớp trả về; Sieve chỉ lọc + sắp xếp, phân trang làm bên dưới.
@@ -48,3 +41,11 @@ public class ListStudentsEndpoint(AppDbContext db, ISieveProcessor sieve)
         }, ct);
     }
 }
+
+public class ListStudentsSummary : Summary<ListStudentsEndpoint>
+{
+    public ListStudentsSummary()
+    {
+        Summary = "Danh sách học sinh (lọc/sắp xếp bằng Sieve)";
+    }
+}   

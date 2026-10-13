@@ -8,16 +8,9 @@ using StudentManagementWeb.Core.Models.Students;
 
 namespace StudentManagementWeb.Core.Endpoints.Students;
 
+[HttpGet(ApiRoutes.Students.GetById)]
 public class GetStudentByIdEndpoint(AppDbContext db) : Endpoint<IdRequest, StudentDto>
 {
-    public override void Configure()
-    {
-        Get("/students/{id}");
-        Roles(AppRoles.Admin, AppRoles.Teacher);
-
-        Summary(s => s.Summary = "Lấy thông tin một học sinh");
-    }
-
     public override async Task HandleAsync(IdRequest req, CancellationToken ct)
     {
         var student = await db.Students
@@ -32,5 +25,13 @@ public class GetStudentByIdEndpoint(AppDbContext db) : Endpoint<IdRequest, Stude
         }
 
         await Send.OkAsync(student.ToDto(), ct);
+    }
+}
+
+public class GetStudentByIdSummary : Summary<GetStudentByIdEndpoint>
+{
+    public GetStudentByIdSummary()
+    {
+        Summary = "Lấy thông tin một học sinh";
     }
 }
