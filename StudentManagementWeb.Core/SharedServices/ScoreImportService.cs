@@ -34,11 +34,13 @@ public class ScoreImportService(AppDbContext db, IScoreExcelService excel) : ISc
         var subjectCodes = parsed.Select(p => p.SubjectCode).Distinct().ToList();
 
         var students = await db.Students
+            .AsNoTracking()
             .Where(s => studentCodes.Contains(s.Code))
             .Select(s => new { s.Id, s.Code })
             .ToDictionaryAsync(s => s.Code, s => s.Id, ct);
 
         var subjects = await db.Subjects
+            .AsNoTracking()
             .Where(s => subjectCodes.Contains(s.Code))
             .Select(s => new { s.Id, s.Code })
             .ToDictionaryAsync(s => s.Code, s => s.Id, ct);

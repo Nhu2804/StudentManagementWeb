@@ -1,18 +1,14 @@
 ﻿using FastEndpoints;
+using Microsoft.AspNetCore.Authorization;
 using StudentManagementWeb.Core.Constants;
 using StudentManagementWeb.Core.SharedServices;
 
 namespace StudentManagementWeb.Core.Endpoints.Scores;
 
+[HttpGet(ApiRoutes.Scores.ImportTemplate)]
+[Authorize(Policy = AppPolicies.ScoreImport)]
 public class DownloadScoreTemplateEndpoint(IScoreExcelService excel) : EndpointWithoutRequest
 {
-    public override void Configure()
-    {
-        Get("/scores/import/template");
-        Roles(AppRoles.Admin);   // sau này thêm AppRoles.Teacher
-        Summary(s => s.Summary = "Tải file Excel mẫu để nhập điểm");
-    }
-
     public override async Task HandleAsync(CancellationToken ct)
     {
         var bytes = excel.CreateTemplate();
@@ -21,5 +17,13 @@ public class DownloadScoreTemplateEndpoint(IScoreExcelService excel) : EndpointW
             ScoreImportConstants.TemplateFileName,
             ScoreImportConstants.XlsxContentType,
             cancellation: ct);
+    }
+}
+
+public class DownloadScoreTemplateSummary : Summary<DownloadScoreTemplateEndpoint>
+{
+    public DownloadScoreTemplateSummary()
+    {
+        Summary = "Tải file Excel mẫu để nhập điểm";
     }
 }

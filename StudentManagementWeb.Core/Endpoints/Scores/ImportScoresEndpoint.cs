@@ -1,61 +1,42 @@
 ﻿using FastEndpoints;
+using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using StudentManagementWeb.Core.Constants;
 using StudentManagementWeb.Core.Models.Scores;
 using StudentManagementWeb.Core.SharedServices;
 
 namespace StudentManagementWeb.Core.Endpoints.Scores;
 
+public class ScoreImportRequestValidator : Validator<ScoreImportRequest>
+{
+    public ScoreImportRequestValidator()
+    {
+        RuleFor(x => x.File)
+            .Cascade(CascadeMode.Stop)
+            .NotNull().WithMessage(ErrorMessages.ImportFileRequired)
+            .Must(f => string.Equals(Path.GetExtension(f.FileName),
+                    ScoreImportConstants.XlsxExtension, StringComparison.OrdinalIgnoreCase))
+                .WithMessage(ErrorMessages.ImportInvalidExtension)
+            .Must(f => f.Length > 0)
+                .WithMessage(ErrorMessages.ImportFileEmpty)
+            .Must(f => f.Length <= ScoreImportConstants.MaxFileSizeBytes)
+                .WithMessage(ErrorMessages.ImportFileTooLarge);
+    }
+}
+
+[HttpPost(ApiRoutes.Scores.Import)]   
+[Authorize(Policy = AppPolicies.ScoreImport)]
+[AllowFileUploads]
 public class ImportScoresEndpoint(IScoreImportService importService)
     : Endpoint<ScoreImportRequest, ScoreImportResult>
 {
-    public override void Configure()
-    {
-        Post("/scores/import");
-        AllowFileUploads();
-        Roles(AppRoles.Admin);   // sau này thêm AppRoles.Teacher + kiểm tra lớp của giáo viên
-        Summary(s => s.Summary =
-            "Import điểm từ file Excel (.xlsx, tối đa 5 MB và 2.000 dòng)");
-    }
-
     public override async Task HandleAsync(ScoreImportRequest req, CancellationToken ct)
     {
-        var file = req.File;
-
-        if (file is null)
-        {
-            AddError(r => r.File, ErrorMessages.ImportFileRequired);
-            await Send.ErrorsAsync(400, ct);
-            return;
-        }
-
-        if (!string.Equals(Path.GetExtension(file.FileName), ScoreImportConstants.XlsxExtension,
-                StringComparison.OrdinalIgnoreCase))
-        {
-            AddError(r => r.File, ErrorMessages.ImportInvalidExtension);
-            await Send.ErrorsAsync(400, ct);
-            return;
-        }
-
-        if (file.Length == 0)
-        {
-            AddError(r => r.File, ErrorMessages.ImportFileEmpty);
-            await Send.ErrorsAsync(400, ct);
-            return;
-        }
-
-        if (file.Length > ScoreImportConstants.MaxFileSizeBytes)
-        {
-            AddError(r => r.File, ErrorMessages.ImportFileTooLarge);
-            await Send.ErrorsAsync(400, ct);
-            return;
-        }
-
         ScoreImportResult result;
         try
         {
-            // Chép ra MemoryStream vì thư viện Excel cần stream đọc lùi được.
             await using var ms = new MemoryStream();
-            await file.CopyToAsync(ms, ct);
+            await req.File.CopyToAsync(ms, ct);
             ms.Position = 0;
 
             result = await importService.ImportAsync(ms, ct);
@@ -75,5 +56,13 @@ public class ImportScoresEndpoint(IScoreImportService importService)
         }
 
         await Send.OkAsync(result, ct);
+    }
+}
+
+public class ImportScoresSummary : Summary<ImportScoresEndpoint>
+{
+    public ImportScoresSummary()
+    {
+        Summary = "Import điểm từ file Excel (.xlsx, tối đa 5 MB và 2.000 dòng)";
     }
 }

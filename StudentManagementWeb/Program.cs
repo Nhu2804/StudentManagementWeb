@@ -3,6 +3,7 @@ using FastEndpoints.Swagger;
 using FastEndpoints.Security;
 using StudentManagementWeb.Core;
 using StudentManagementWeb.Infrastructure;
+using StudentManagementWeb.Core.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,11 @@ var jwtKey = builder.Configuration["Jwt:SigningKey"]
 
 builder.Services
     .AddAuthenticationJwtBearer(s => s.SigningKey = jwtKey)
-    .AddAuthorization();
+    .AddAuthorization(options =>
+    {
+        // Quyền import điểm: hiện chỉ Admin; sau này thêm AppRoles.Teacher tại đây, một nơi duy nhất.
+        options.AddPolicy(AppPolicies.ScoreImport, p => p.RequireRole(AppRoles.Admin));
+    });
 
 builder.Services.AddFastEndpoints(options =>
 {
