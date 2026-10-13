@@ -1,6 +1,5 @@
 ﻿using FastEndpoints;
 using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
 using StudentManagementWeb.Core.Constants;
 using StudentManagementWeb.Core.Models.Scores;
 using StudentManagementWeb.Core.SharedServices;
@@ -25,7 +24,6 @@ public class ScoreImportRequestValidator : Validator<ScoreImportRequest>
 }
 
 [HttpPost(ApiRoutes.Scores.Import)]   
-[Authorize(Policy = AppPolicies.ScoreImport)]
 [AllowFileUploads]
 public class ImportScoresEndpoint(IScoreImportService importService)
     : Endpoint<ScoreImportRequest, ScoreImportResult>

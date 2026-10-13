@@ -1,12 +1,10 @@
 ﻿using FastEndpoints;
-using Microsoft.AspNetCore.Authorization;
 using StudentManagementWeb.Core.Constants;
 using StudentManagementWeb.Core.SharedServices;
 
 namespace StudentManagementWeb.Core.Endpoints.Scores;
 
 [HttpGet(ApiRoutes.Scores.ImportTemplate)]
-[Authorize(Policy = AppPolicies.ScoreImport)]
 public class DownloadScoreTemplateEndpoint(IScoreExcelService excel) : EndpointWithoutRequest
 {
     public override async Task HandleAsync(CancellationToken ct)

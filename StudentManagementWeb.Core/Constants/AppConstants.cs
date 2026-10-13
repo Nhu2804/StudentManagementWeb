@@ -74,9 +74,3 @@ public static class ScoreImportConstants
     public static readonly string[] Headers =
         ["Mã học sinh", "Mã môn", "Học kỳ", "Năm học", "Điểm"];
 }
-
-
-public static class AppPolicies
-{
-    public const string ScoreImport = "ScoreImport";
-}
