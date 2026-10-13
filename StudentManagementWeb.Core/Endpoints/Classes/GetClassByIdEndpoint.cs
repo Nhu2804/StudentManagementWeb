@@ -8,16 +8,9 @@ using StudentManagementWeb.Core.Models.Common;
 
 namespace StudentManagementWeb.Core.Endpoints.Classes;
 
+[HttpGet(ApiRoutes.Classes.GetById)]
 public class GetClassByIdEndpoint(AppDbContext db) : Endpoint<IdRequest, ClassDto>
 {
-    public override void Configure()
-    {
-        Get("/classes/{id}");
-        Roles(AppRoles.Admin, AppRoles.Teacher);
-
-        Summary(s => s.Summary = "Lấy thông tin một lớp học (kèm sĩ số)");
-    }
-
     public override async Task HandleAsync(IdRequest req, CancellationToken ct)
     {
         var row = await db.Classes
@@ -33,5 +26,13 @@ public class GetClassByIdEndpoint(AppDbContext db) : Endpoint<IdRequest, ClassDt
         }
 
         await Send.OkAsync(row.Class.ToDto(row.StudentCount), ct);
+    }
+}
+
+public class GetClassByIdSummary : Summary<GetClassByIdEndpoint>
+{
+    public GetClassByIdSummary()
+    {
+        Summary = "Lấy thông tin một lớp học (kèm sĩ số)";
     }
 }

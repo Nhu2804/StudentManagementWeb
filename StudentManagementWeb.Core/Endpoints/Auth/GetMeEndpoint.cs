@@ -1,19 +1,15 @@
 ﻿using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
+using StudentManagementWeb.Core.Constants;
 using StudentManagementWeb.Core.DbContexts;
 using StudentManagementWeb.Core.MapperProfiles;
 using StudentManagementWeb.Core.Models.Auth;
 
 namespace StudentManagementWeb.Core.Endpoints.Auth;
 
+[HttpGet(ApiRoutes.Auth.Me)]
 public class GetMeEndpoint(AppDbContext db) : EndpointWithoutRequest<UserDto>
 {
-    public override void Configure()
-    {
-        Get("/auth/me");
-        Summary(s => s.Summary = "Thông tin tài khoản đang đăng nhập");
-    }
-
     public override async Task HandleAsync(CancellationToken ct)
     {
         if (!Guid.TryParse(User.FindFirst("UserId")?.Value, out var userId))
@@ -30,5 +26,13 @@ public class GetMeEndpoint(AppDbContext db) : EndpointWithoutRequest<UserDto>
         }
 
         await Send.OkAsync(user.ToDto(), ct);
+    }
+}
+
+public class GetMeSummary : Summary<GetMeEndpoint>
+{
+    public GetMeSummary()
+    {
+        Summary = "Thông tin tài khoản đang đăng nhập";
     }
 }

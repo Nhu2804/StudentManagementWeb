@@ -24,16 +24,9 @@ public class CreateScoreValidator : Validator<CreateScoreRequest>
     }
 }
 
+[HttpPost(ApiRoutes.Scores.Create)]
 public class CreateScoreEndpoint(AppDbContext db) : Endpoint<CreateScoreRequest, ScoreDto>
 {
-    public override void Configure()
-    {
-        Post("/scores");
-        Roles(AppRoles.Admin, AppRoles.Teacher);
-
-        Summary(s => s.Summary = "Nhập điểm cho học sinh (mỗi môn/học kỳ/năm học một điểm)");
-    }
-
     public override async Task HandleAsync(CreateScoreRequest req, CancellationToken ct)
     {
         var student = await db.Students.FirstOrDefaultAsync(s => s.Id == req.StudentId, ct);
@@ -87,5 +80,13 @@ public class CreateScoreEndpoint(AppDbContext db) : Endpoint<CreateScoreRequest,
         score.Student = student;
         score.Subject = subject;
         await Send.ResponseAsync(score.ToDto(), 201, ct);
+    }
+}
+
+public class CreateScoreSummary : Summary<CreateScoreEndpoint>
+{
+    public CreateScoreSummary()
+    {
+        Summary = "Nhập điểm cho học sinh (mỗi môn/học kỳ/năm học một điểm)";
     }
 }

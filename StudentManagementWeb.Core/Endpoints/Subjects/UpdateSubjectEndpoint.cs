@@ -18,16 +18,9 @@ public class UpdateSubjectValidator : Validator<UpdateSubjectRequest>
     }
 }
 
+[HttpPut(ApiRoutes.Subjects.Update)]
 public class UpdateSubjectEndpoint(AppDbContext db) : Endpoint<UpdateSubjectRequest, SubjectDto>
 {
-    public override void Configure()
-    {
-        Put("/subjects/{id}");
-        Roles(AppRoles.Admin);
-
-        Summary(s => s.Summary = "Cập nhật môn học");
-    }
-
     public override async Task HandleAsync(UpdateSubjectRequest req, CancellationToken ct)
     {
         var subject = await db.Subjects.FirstOrDefaultAsync(s => s.Id == req.Id, ct);
@@ -51,5 +44,13 @@ public class UpdateSubjectEndpoint(AppDbContext db) : Endpoint<UpdateSubjectRequ
         await db.SaveChangesAsync(ct);
 
         await Send.OkAsync(subject.ToDto(), ct);
+    }
+}
+
+public class UpdateSubjectSummary : Summary<UpdateSubjectEndpoint>
+{
+    public UpdateSubjectSummary()
+    {
+        Summary = "Cập nhật môn học";
     }
 }

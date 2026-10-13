@@ -9,16 +9,10 @@ using StudentManagementWeb.Core.Models.Subjects;
 
 namespace StudentManagementWeb.Core.Endpoints.Subjects;
 
+[HttpGet(ApiRoutes.Subjects.GetAll)]
 public class ListSubjectsEndpoint(AppDbContext db, ISieveProcessor sieve)
     : Endpoint<ListSubjectsRequest, PagedResult<SubjectDto>>
 {
-    public override void Configure()
-    {
-        Get("/subjects");
-        
-        Summary(s => s.Summary = "Danh sách môn học (lọc/sắp xếp bằng Sieve)");
-    }
-
     public override async Task HandleAsync(ListSubjectsRequest req, CancellationToken ct)
     {
         // Sieve chỉ lọc + sắp xếp; phân trang tự làm bên dưới để trả đúng Page/PageSize thực tế.
@@ -47,5 +41,13 @@ public class ListSubjectsEndpoint(AppDbContext db, ISieveProcessor sieve)
             PageSize = pageSize,
             TotalItems = total
         }, ct);
+    }
+}
+
+public class ListSubjectsSummary : Summary<ListSubjectsEndpoint>
+{
+    public ListSubjectsSummary()
+    {
+        Summary = "Danh sách môn học (lọc/sắp xếp bằng Sieve)";
     }
 }

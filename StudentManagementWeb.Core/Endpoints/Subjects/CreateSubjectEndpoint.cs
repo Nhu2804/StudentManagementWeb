@@ -17,16 +17,9 @@ public class CreateSubjectValidator : Validator<CreateSubjectRequest>
     }
 }
 
+[HttpPost(ApiRoutes.Subjects.Create)]
 public class CreateSubjectEndpoint(AppDbContext db) : Endpoint<CreateSubjectRequest, SubjectDto>
 {
-    public override void Configure()
-    {
-        Post("/subjects");
-        Roles(AppRoles.Admin);
-
-        Summary(s => s.Summary = "Thêm môn học mới");
-    }
-
     public override async Task HandleAsync(CreateSubjectRequest req, CancellationToken ct)
     {
         var code = req.Code.Trim().ToUpperInvariant();
@@ -45,5 +38,13 @@ public class CreateSubjectEndpoint(AppDbContext db) : Endpoint<CreateSubjectRequ
         await db.SaveChangesAsync(ct);
 
         await Send.ResponseAsync(entity.ToDto(), 201, ct);
+    }
+}
+
+public class CreateSubjectSummary : Summary<CreateSubjectEndpoint>
+{
+    public CreateSubjectSummary()
+    {
+        Summary = "Thêm môn học mới";
     }
 }

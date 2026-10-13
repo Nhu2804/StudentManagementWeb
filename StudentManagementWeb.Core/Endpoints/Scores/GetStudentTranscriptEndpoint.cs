@@ -8,18 +8,13 @@ using StudentManagementWeb.Core.SharedServices;
 
 namespace StudentManagementWeb.Core.Endpoints.Scores;
 
+// Hai đường dẫn cùng một endpoint:
+//  - Transcript (/students/{studentId}/scores): Admin/Teacher xem bất kỳ học sinh nào
+//  - Me (/scores/me)                          : học sinh xem điểm của chính mình
+[HttpGet(ApiRoutes.Scores.Transcript, ApiRoutes.Scores.Me)]
 public class GetStudentTranscriptEndpoint(AppDbContext db)
     : Endpoint<StudentTranscriptRequest, StudentTranscriptDto>
 {
-    public override void Configure()
-    {
-        // Hai đường dẫn cùng một endpoint:
-        //  - /students/{studentId}/scores : Admin/Teacher xem bất kỳ học sinh nào
-        //  - /scores/me                  : học sinh xem điểm của chính mình
-        Get("/students/{studentId}/scores", "/scores/me");
-        Summary(s => s.Summary = "Bảng điểm học sinh, kèm điểm trung bình và xếp loại");
-    }
-
     public override async Task HandleAsync(StudentTranscriptRequest req, CancellationToken ct)
     {
         var studentId = req.StudentId ?? Guid.Empty;
@@ -82,5 +77,13 @@ public class GetStudentTranscriptEndpoint(AppDbContext db)
             AverageScore = average,
             Classification = average is null ? null : GradeClassifier.Classify(average.Value)
         }, ct);
+    }
+}
+
+public class GetStudentTranscriptSummary : Summary<GetStudentTranscriptEndpoint>
+{
+    public GetStudentTranscriptSummary()
+    {
+        Summary = "Bảng điểm học sinh, kèm điểm trung bình và xếp loại";
     }
 }

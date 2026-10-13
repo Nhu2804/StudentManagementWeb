@@ -20,16 +20,9 @@ public class UpdateClassValidator : Validator<UpdateClassRequest>
     }
 }
 
+[HttpPut(ApiRoutes.Classes.Update)]
 public class UpdateClassEndpoint(AppDbContext db) : Endpoint<UpdateClassRequest, ClassDto>
 {
-    public override void Configure()
-    {
-        Put("/classes/{id}");
-        Roles(AppRoles.Admin);
-
-        Summary(s => s.Summary = "Cập nhật lớp học");
-    }
-
     public override async Task HandleAsync(UpdateClassRequest req, CancellationToken ct)
     {
         var entity = await db.Classes.FirstOrDefaultAsync(c => c.Id == req.Id, ct);
@@ -57,5 +50,13 @@ public class UpdateClassEndpoint(AppDbContext db) : Endpoint<UpdateClassRequest,
 
         var studentCount = await db.Students.CountAsync(s => s.ClassId == entity.Id, ct);
         await Send.OkAsync(entity.ToDto(studentCount), ct);
+    }
+}
+
+public class UpdateClassSummary : Summary<UpdateClassEndpoint>
+{
+    public UpdateClassSummary()
+    {
+        Summary = "Cập nhật lớp học";
     }
 }
